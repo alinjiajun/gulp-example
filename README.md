@@ -13,14 +13,16 @@
 编译页面： gulp html
 编译脚本： gulp script
 编译样式： gulp styles
+生成雪碧图：gulp sprites
+生产环境的文件添加hash后缀 gulp rev
 语法检测： gulp eslint
 压缩图片： gulp images
 ```
 
-## [项目地址](https://github.com/vincentSea/gulp-cli)
+## [项目地址](https://github.com/alinjiajun/gulp-example.git)
 * 如对你有帮助，希望给个Star ！哈哈哈！！
 ```
-git clone https://github.com/vincentSea/gulp-cli.git
+git clone https://github.com/alinjiajun/gulp-example.git
 ```
 
 ## 项目目录
@@ -28,7 +30,7 @@ git clone https://github.com/vincentSea/gulp-cli.git
 ├── README.md         # 项目说明
 ├── config            # gulp路径配置
 ├── dist              # 打包路径
-|
+|── rev               # css/js/images对应打包生成的版本号
 ├── gulpfile.js       # gulp配置文件
 ├── package.json      # 依赖包
 |
@@ -92,7 +94,5 @@ useWebpack: false // 是否启用webpack
 * 可以随便根据自己的要求去进行修改配置
 
 * 如有设计不合理地方，可以提出，我乃虚心听取
-
-* [项目地址](https://github.com/vincentSea/gulp-cli) 如对你有帮助，希望给个Star ！哈哈哈！！
 
 
