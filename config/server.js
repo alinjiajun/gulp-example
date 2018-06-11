@@ -5,12 +5,18 @@ module.exports = {
   server: {
     baseDir: './dist',
     middleware: [
-      // proxy.proxyPrase(
-      //   {
-      //     target: 'http://v3.wufazhuce.com:8000/api',
-      //     route: '/api'
-      //   }
-      // )
+      proxy.proxyPrase(
+        {
+          target: 'http://v3.wufazhuce.com:8000/api',
+          route: '/api'
+        }
+      ),
+      proxy.proxyPrase(
+        {
+          target: 'http://v3.wufazhuce.com:8000/server',
+          route: '/server'
+        }
+      )
     ]
   },
   // 是否开启多端同步
