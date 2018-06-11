@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /**
 * Remove default margin.
 */
@@ -51,15 +50,15 @@ img {
   border: 0;
 }
 
-input[type="botton"] {
-  -webkit-appearance: none;
+input[type="botton"]{
+  -webkit-appearance:none;
 }
 
 input:focus::-webkit-input-placeholder {
   color: transparent;
 }
 
-input[type="search"] {
+input[type="search"]{
   -webkit-appearance: textfield;
 }
 
@@ -67,39 +66,43 @@ input:-webkit-autofill {
   -webkit-box-shadow: 000px 1000px whiteinset;
 }
 
-.nowrap {
+.nowrap{
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.nowrap-hide {
+.nowrap-hide{
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
-  word-break:  break-all;
+  word-break: break-all;
 }
 
-.nowra-clamp-one {
+.nowra-clamp-one{
   -webkit-line-clamp: 1;
 }
+
 
 #main {
   width: 100%;
   margin: 50px auto;
   text-align: center;
+
+  h1 {
+    line-height: 100px;
+    color: #d3483e;
+  }
+
+  img {
+    width: 150px;
+  }
 }
 
-#main h1 {
-  line-height: 100px;
-  color: #d3483e;
-}
-
-#main img {
-  width: 150px;
-}
 
 #main {
   background: #fff;
+  background-image: url('/static/images/gulp.png');
 }
+

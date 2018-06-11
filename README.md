@@ -5,8 +5,8 @@
 ## 项目启动
 ```
 // 常用命令
-开发环境： npm run dev
-生产环境： npm run build
+开发环境： npm run dev(说明：自动打开浏览器,服务根目录位于./dist)
+生产环境： npm run build(说明：生成压缩文件，rev版本hash)
 
 // 单任务命令
 执行压缩： gulp zip
@@ -40,8 +40,8 @@ git clone https://github.com/alinjiajun/gulp-example.git
 │   ├── static        # 资源文件夹
 │   │   ├── images    # 图库
 │   │   ├── js        # 脚本
-│   │   └── styles    # 样式（scss, css）
-│   └── views         # 页面
+│   │   └── css       # 样式（scss, css）
+│   │   └── lib       # 引入的库（会直接复制到dist目录）
 |
 ├── static            # 打包到dist中static文件中
 └── webpack.config.js # webpack配置文件

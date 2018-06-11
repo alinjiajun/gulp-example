@@ -12,7 +12,7 @@ const cleanCSS = require('gulp-clean-css')
 const plumber = require('gulp-plumber')
 const notify = require('gulp-notify')
 const cache  = require('gulp-cache')
-const imagemin = require('gulp-imagemin')
+
 const pngquant = require('imagemin-pngquant')
 const uglify = require('gulp-uglify')
 const eslint = require('gulp-eslint')
@@ -22,6 +22,7 @@ const sequence = require('gulp-sequence')
 const zip = require('gulp-zip')
 const del = require('del')
 const rename = require('gulp-rename')
+const imagemin = require('gulp-imagemin')
 const spritesmith = require('gulp.spritesmith')
 var buffer = require('vinyl-buffer');
 
@@ -83,7 +84,7 @@ function cbTask(task) {
 
 //收集需要压缩的雪碧图
 const spritesArr = [];
-(function () { 
+(function () {
   let spritesDirs = respath('src/static/sprites');
 
   fs.readdirSync(spritesDirs).forEach((name) => {
@@ -101,7 +102,7 @@ const spritesArr = [];
           padding: 5
         }));
         spritesData.css
-        .pipe(gulp.dest(path.resolve(__dirname, './src/static/styles')));
+        .pipe(gulp.dest(path.resolve(__dirname, './src/static/css')));
         spritesData.img
         .pipe(buffer())
         .pipe(imagemin())
@@ -118,6 +119,7 @@ var revmiddlefile = './revmiddlefile'// 目标文件夹
 var cssSrc = revpath + '/css/*.css',
   jsSrc = revpath + '/js/*.js',
   imgSrc = revpath + '/images/*.*';
+  libSrc = revpath + '/lib/*.*';
   
 // CSS生成文件hash编码并生成 rev-manifest.json文件名对照映射
 gulp.task('revCss', function(){
@@ -128,6 +130,11 @@ gulp.task('revCss', function(){
     .pipe(rev.manifest())
     .pipe(gulp.dest('./rev/css'));
 });
+// lin 直接复制文件
+gulp.task('revlib', function () {
+  return gulp.src(libSrc)
+    .pipe(gulp.dest(revmiddlefile + '/static/lib'))
+})
 // 处理图片
 gulp.task('revImg', function(){
     return gulp.src(imgSrc)
@@ -145,6 +152,18 @@ gulp.task('revJs', function(){
     .pipe(rev.manifest())
     .pipe(gulp.dest('./rev/js'));
 });
+
+//js和css文件中替换掉imgage文件的版本
+gulp.task('revImgToCss', function () {
+  return gulp.src(['./rev/images/*.json', revmiddlefile + '/static/css/**/*'])
+  .pipe(revCollector())
+  .pipe(gulp.dest(revmiddlefile + '/static/css'));
+});
+gulp.task('revImgToJs', function () {
+  return gulp.src(['./rev/images/*.json', revmiddlefile + '/static/js/**/*'])
+  .pipe(revCollector())
+  .pipe(gulp.dest(revmiddlefile + '/static/js'));
+})
 // Html替换css、js文件版本
 gulp.task('revHtml', function () {
   return gulp.src(['./rev/**/*.json', './dist/**/*.html'])
@@ -160,6 +179,9 @@ gulp.task('rev', function (done) {
     ['revImg'],
     ['revCss'],
     ['revJs'],
+    ['revlib'],
+    ['revImgToCss'],
+    ['revImgToJs'],
     ['revHtml'],
     done);
 });
@@ -235,6 +257,11 @@ gulp.task('clean', () => {
   });
 })
 
+gulp.task('copy', () => {
+  return gulp.src(config.dev.lib)
+  .pipe(gulp.dest(config.build.lib))
+})
+
 gulp.task('watch', () => {
   gulp.watch(config.dev.allhtml, ['html']).on('change', reload)
   gulp.watch(config.dev.styles, ['styles']).on('change', reload)
@@ -252,7 +279,7 @@ gulp.task('zip', () => {
 
 
 gulp.task('server', () => {
-  const task = ['sprites', 'html', 'styles', 'script', 'images', 'static']
+  const task = ['sprites', 'html', 'styles', 'script', 'images', 'static', 'copy']
   cbTask(task).then(() => {
     browserSync.init(config.server)
     console.log(chalk.cyan('  Server complete.\n'))
@@ -261,7 +288,7 @@ gulp.task('server', () => {
 })
 
 gulp.task('build', () => {
-  const task = ['html', 'styles', 'script', 'images', 'static']
+  const task = ['sprites','html', 'styles', 'script', 'images', 'static', 'copy']
   cbTask(task).then(() => {
     console.log(chalk.cyan('  Build complete.\n'))
 
